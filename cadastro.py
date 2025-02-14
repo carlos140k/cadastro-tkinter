@@ -25,26 +25,28 @@ fechar_img_btn = tk.Button(img_frame, text='Fechar_Foto', font=('bold', 12), bg=
 fechar_img_btn.pack(side=tk.LEFT, anchor=tk.S, padx=5)
 
 formulario_frame = tk.Frame(frame_Principal)
+
+
 id_lbl = tk.Label(formulario_frame, text='Usuário ID:', font=('bold', 12))
-id_lbl.grid(row=0, column=0)
+id_lbl.grid(row=0, column=0, sticky=tk.W, pady=2)
 
 id_numero = tk.Entry(formulario_frame, font=('bold', 12))
 id_numero.grid(row=0, column=1)
 
 nome_lbl = tk.Label(formulario_frame, text='Nome Usuário:', font=('bold', 12))
-nome_lbl.grid(row=1, column=0)
+nome_lbl.grid(row=1, column=0, sticky=tk.W, pady=2)
 
 nome = tk.Entry(formulario_frame, font=('bold', 12))
 nome.grid(row=1, column=1)
 
 idade_lbl = tk.Label(formulario_frame, text='Idade Usuário:', font=('bold', 12))
-idade_lbl.grid(row=2, column=0)
+idade_lbl.grid(row=2, column=0, sticky=tk.W, pady=2)
 
 idade = tk.Entry(formulario_frame, font=('bold', 12))
 idade.grid(row=2, column=1)
 
 sexo = tk.Label(formulario_frame, text='Selecione Sexo:', font=('bold', 12))
-sexo.grid(row=3, column=0)
+sexo.grid(row=3, column=0, sticky=tk.W, pady=2)
 
 sexo_btn_frame = tk.Frame(formulario_frame)
 
@@ -59,7 +61,40 @@ feminino_btn.pack(side=tk.LEFT)
 
 sexo_btn_frame.grid(row=3, column=1)
 
+
+telefone_lbl = tk.Label(formulario_frame, text='Telefone Usuário:', font=('bold', 12))
+telefone_lbl.grid(row=4, column=0, sticky=tk.W, pady=2)
+
+telefone = tk.Entry(formulario_frame, font=('bold', 12))
+telefone.grid(row=4, column=1)
+
+endereco_lbl = tk.Label(formulario_frame, text='Endereço Usuário:', font=('bold', 12))
+endereco_lbl.grid(row=5, column=0, sticky=tk.W, pady=2)
+
+endereco = tk.Entry(formulario_frame, font=('bold', 12))
+endereco.grid(row=5, column=1)
+
+
+
 formulario_frame.pack(anchor=tk.W, pady=5, padx=5)
+
+
+
+
+botao_frame = tk.Frame(frame_Principal, bg='green')
+botao_frame.pack(anchor=tk.W, padx=10)
+
+add_btn = tk.Button(botao_frame, text='Cadastrar', bg='green', fg='white', font=('bold', 12))
+add_btn.pack(side=tk.LEFT, padx=10)
+
+atualizar_btn = tk.Button(botao_frame, text='Atualizar', bg='yellow', fg='black', font=('bold', 12))
+atualizar_btn.pack(side=tk.LEFT, padx=10)
+
+deletar_btn = tk.Button(botao_frame, text='Deletar', bg='red', fg='yellow', font=('bold', 12))
+deletar_btn.pack(side=tk.LEFT, padx=10)
+
+limpar_btn = tk.Button(botao_frame, text='Limpar', bg='orange', fg='blue', font=('bold', 12))
+limpar_btn.pack(side=tk.LEFT, padx=10)
 
 
 
