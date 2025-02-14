@@ -1,10 +1,32 @@
 import tkinter as tk 
 from tkinter.ttk import Treeview
+from turtle import right
+from tkinter.filedialog import askopenfilename
+from PIL import ImageTk, Image
+
 
 
 root = tk.Tk()
 root.geometry('500x700')
 root.title('Cadastro de Imagens')
+
+
+image_data = b''
+
+def ler_abrir_image():
+    global image_data, img
+
+    path = askopenfilename()
+    if path:
+        ler_image = open(path, 'rb')
+        image_data = ler_image.read()
+        ler_image.close()
+
+        img = ImageTk.PhotoImage(Image.open(path))
+        img_label.config(image=img)
+
+
+
 
 
 frame_Principal = tk.Frame(root)
@@ -14,12 +36,13 @@ Cabecalho.pack(fill=tk.X)
 
 img_frame = tk.Frame(frame_Principal)
 img_padrao = tk.PhotoImage(file='aluno.png')
+
 img_label = tk.Label(img_frame, image=img_padrao, bd=2, relief=tk.SOLID,)
 img_label.pack(side=tk.LEFT)
 img_frame.configure(bg='green')
 img_frame.pack(anchor=tk.W, pady=5)
 
-abrir_img_btn = tk.Button(img_frame, text='Abrir_Foto', font=('bold', 12), bg='green', fg='white')
+abrir_img_btn = tk.Button(img_frame, text='Abrir_Foto', font=('bold', 12), command=ler_abrir_image, bg='green', fg='white')
 abrir_img_btn.pack(side=tk.LEFT, anchor=tk.S, padx=5)
 
 fechar_img_btn = tk.Button(img_frame, text='Fechar_Foto', font=('bold', 12), bg='red', fg='yellow')
