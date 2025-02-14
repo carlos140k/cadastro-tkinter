@@ -3,7 +3,7 @@ from tkinter.ttk import Treeview
 
 
 root = tk.Tk()
-root.geometry('500x750')
+root.geometry('500x700')
 root.title('Cadastro de Imagens')
 
 
@@ -31,19 +31,19 @@ formulario_frame = tk.Frame(frame_Principal)
 id_lbl = tk.Label(formulario_frame, text='Usuário ID:', font=('bold', 12))
 id_lbl.grid(row=0, column=0, sticky=tk.W, pady=2)
 
-id_numero = tk.Entry(formulario_frame, font=('bold', 12))
+id_numero = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 id_numero.grid(row=0, column=1)
 
 nome_lbl = tk.Label(formulario_frame, text='Nome Usuário:', font=('bold', 12))
 nome_lbl.grid(row=1, column=0, sticky=tk.W, pady=2)
 
-nome = tk.Entry(formulario_frame, font=('bold', 12))
+nome = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 nome.grid(row=1, column=1)
 
 idade_lbl = tk.Label(formulario_frame, text='Idade Usuário:', font=('bold', 12))
 idade_lbl.grid(row=2, column=0, sticky=tk.W, pady=2)
 
-idade = tk.Entry(formulario_frame, font=('bold', 12))
+idade = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 idade.grid(row=2, column=1)
 
 sexo = tk.Label(formulario_frame, text='Selecione Sexo:', font=('bold', 12))
@@ -58,7 +58,7 @@ masculino_btn = tk.Radiobutton(sexo_btn_frame, text='Masculino', font=('bold', 1
 masculino_btn.pack(side=tk.LEFT)
 
 feminino_btn = tk.Radiobutton(sexo_btn_frame, text='Feminino', font=('bold', 12), variable=sexo, value='feminino')
-feminino_btn.pack(side=tk.LEFT)
+feminino_btn.pack(side=tk.LEFT, padx=98)
 
 sexo_btn_frame.grid(row=3, column=1)
 
@@ -66,13 +66,13 @@ sexo_btn_frame.grid(row=3, column=1)
 telefone_lbl = tk.Label(formulario_frame, text='Telefone Usuário:', font=('bold', 12))
 telefone_lbl.grid(row=4, column=0, sticky=tk.W, pady=2)
 
-telefone = tk.Entry(formulario_frame, font=('bold', 12))
+telefone = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 telefone.grid(row=4, column=1)
 
 endereco_lbl = tk.Label(formulario_frame, text='Endereço Usuário:', font=('bold', 12))
 endereco_lbl.grid(row=5, column=0, sticky=tk.W, pady=2)
 
-endereco = tk.Entry(formulario_frame, font=('bold', 12))
+endereco = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 endereco.grid(row=5, column=1)
 
 
