@@ -26,7 +26,10 @@ def ler_abrir_image():
         img_label.config(image=img)
 
 
-
+def deletar_image():
+    global image_data
+    image_data = b''
+    img_label.config(image=img_padrao)
 
 
 frame_Principal = tk.Frame(root)
@@ -37,7 +40,7 @@ Cabecalho.pack(fill=tk.X)
 img_frame = tk.Frame(frame_Principal)
 img_padrao = tk.PhotoImage(file='aluno.png')
 
-img_label = tk.Label(img_frame, image=img_padrao, bd=2, relief=tk.SOLID,)
+img_label = tk.Label(img_frame, image=img_padrao, bd=2, relief=tk.SOLID)
 img_label.pack(side=tk.LEFT)
 img_frame.configure(bg='green')
 img_frame.pack(anchor=tk.W, pady=5)
@@ -45,7 +48,7 @@ img_frame.pack(anchor=tk.W, pady=5)
 abrir_img_btn = tk.Button(img_frame, text='Abrir_Foto', font=('bold', 12), command=ler_abrir_image, bg='green', fg='white')
 abrir_img_btn.pack(side=tk.LEFT, anchor=tk.S, padx=5)
 
-fechar_img_btn = tk.Button(img_frame, text='Fechar_Foto', font=('bold', 12), bg='red', fg='yellow')
+fechar_img_btn = tk.Button(img_frame, text='Fechar_Foto', font=('bold', 12), command=deletar_image, bg='red', fg='yellow')
 fechar_img_btn.pack(side=tk.LEFT, anchor=tk.S, padx=5)
 
 formulario_frame = tk.Frame(frame_Principal)
