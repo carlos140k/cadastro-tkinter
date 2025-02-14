@@ -1,4 +1,5 @@
 import tkinter as tk 
+from tkinter.ttk import Treeview
 
 
 root = tk.Tk()
@@ -104,7 +105,7 @@ frame_Principal.configure(width=500, height=400, bg='green')
 
 
 frame_tabela = tk.Frame(root)
-frame_tabela.pack(side= tk.BOTTOM, fill= tk.X)
+frame_tabela.pack(side= tk.TOP, fill= tk.X)
 
 pesquisar_lbl = tk.Label(frame_tabela, text='Pesquisar Usuário por ID', font=('bold', 12))
 pesquisar_lbl.pack(anchor= tk.W, padx=5)
@@ -113,10 +114,33 @@ pesquisar = tk.Entry(frame_tabela, font=('bold', 12))
 pesquisar.pack(anchor= tk.W, padx=5, pady=10)
 
 
-framerodape = tk.Frame(frame_tabela, bg='grey')
+framerodape = tk.Frame(root, bg='grey')
 framerodape.pack(side= tk.BOTTOM, fill= tk.X)
-
 rodape_lbl = tk.Label(framerodape, text='carlos140k@gmail.com', bg='grey', fg='white', font=('bold', 12))
-rodape_lbl.pack()
+rodape_lbl.pack(side= tk.BOTTOM, fill= tk.X)
+
+tree_table = Treeview(frame_tabela)
+tree_table.pack(fill= tk.X)
+
+tree_table['column'] = ['ID', 'Nome', 'Idade', 'Sexo', 'Telefone', 'Email']
+tree_table.column('#0', stretch= tk.NO, width=0)
+
+tree_table.heading('ID', text='Numero ID', anchor= tk.W)
+tree_table.column('ID', width=80, anchor= tk.W)
+
+tree_table.heading('Nome', text='Nome', anchor= tk.W)
+tree_table.column('Nome', width=110, anchor= tk.W)
+
+tree_table.heading('Idade', text='Idade', anchor= tk.W)
+tree_table.column('Idade', width=80, anchor= tk.W)
+
+tree_table.heading('Sexo', text='Sexo', anchor= tk.W)
+tree_table.column('Sexo', width=80, anchor= tk.W)
+
+tree_table.heading('Telefone', text='Telefone', anchor= tk.W)
+tree_table.column('Telefone', width=100, anchor= tk.W)
+
+tree_table.heading('Email', text='Email', anchor= tk.W)
+tree_table.column('Email', width=150, anchor= tk.W)
 
 root.mainloop()
