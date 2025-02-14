@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 root = tk.Tk()
-root.geometry('600x620')
+root.geometry('500x750')
 root.title('Cadastro de Imagens')
 
 
@@ -102,5 +102,21 @@ frame_Principal.pack(anchor=tk.W, pady=5, padx=5)
 frame_Principal.pack_propagate(False)
 frame_Principal.configure(width=500, height=400, bg='green')
 
+
+frame_tabela = tk.Frame(root)
+frame_tabela.pack(side= tk.BOTTOM, fill= tk.X)
+
+pesquisar_lbl = tk.Label(frame_tabela, text='Pesquisar Usuário por ID', font=('bold', 12))
+pesquisar_lbl.pack(anchor= tk.W, padx=5)
+
+pesquisar = tk.Entry(frame_tabela, font=('bold', 12))
+pesquisar.pack(anchor= tk.W, padx=5, pady=10)
+
+
+framerodape = tk.Frame(frame_tabela, bg='grey')
+framerodape.pack(side= tk.BOTTOM, fill= tk.X)
+
+rodape_lbl = tk.Label(framerodape, text='carlos140k@gmail.com', bg='grey', fg='white', font=('bold', 12))
+rodape_lbl.pack()
 
 root.mainloop()
