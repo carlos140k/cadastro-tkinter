@@ -14,7 +14,7 @@ import sqlite3
 
 
 root = tk.Tk()
-root.geometry('500x700')
+root.geometry('800x600')
 root.title('Cadastro de Imagens')
 
 
@@ -375,7 +375,7 @@ pesquisar.bind('<KeyRelease>', lambda e: pesquisar_cadastro(pesquisar.get()))
 
 framerodape = tk.Frame(root, bg='grey')
 framerodape.pack(side= tk.BOTTOM, fill= tk.X)
-rodape_lbl = tk.Label(framerodape, text='carlos140k@gmail.com', bg='grey', fg='white', font=('bold', 12))
+rodape_lbl = tk.Label(framerodape, text='carlos140k@gmail.com', bg='grey', fg='white', font=('Arial', 12, 'bold'))
 rodape_lbl.pack(side= tk.BOTTOM, fill= tk.X)
 
 tree_table = Treeview(frame_tabela)
