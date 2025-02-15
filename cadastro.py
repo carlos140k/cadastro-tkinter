@@ -241,6 +241,29 @@ def colocar_dados():
                 img_label.config(image=img)
 
 
+def pesquisar_cadastro(_id):
+    if _id != '':
+
+        connection = sqlite3.connect('cadastro_alunos.db')
+        cursor = connection.cursor()
+        pesquisar_id_query = f""" SELECT id, nome, idade, sexo, telefone, email FROM dados WHERE id == ? """, (_id)
+        cursor.execute(pesquisar_id_query)
+
+        connection.commit()
+        response = cursor.fetchall()
+        connection.close()
+
+        if response:
+            for item in tree_table.get_children():
+                tree_table.delete(item)
+            
+            for r in range(len(dados)):
+                tree_table.insert(parent='', iid=r, index='end', values=dados[r][0:6])
+            
+                limpar_dados()
+
+    else:
+        carregar_dados_tree()
 
 frame_Principal = tk.Frame(root)
 
@@ -350,6 +373,7 @@ pesquisar_lbl.pack(anchor= tk.W, padx=5)
 
 pesquisar = tk.Entry(frame_tabela, font=('bold', 12))
 pesquisar.pack(anchor= tk.W, padx=5, pady=10)
+pesquisar.bind('<keyRelease>', lambda e: pesquisar_cadastro(pesquisar.get()))
 
 
 framerodape = tk.Frame(root, bg='grey')
