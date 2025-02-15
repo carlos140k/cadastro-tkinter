@@ -1,11 +1,10 @@
 from distutils.cmd import Command
 from importlib.resources import path
 import tkinter as tk 
-from tkinter.tix import IMAGE
 from tkinter.ttk import Treeview
-from turtle import right
-from tkinter.filedialog import askopenfilename, askopenfilenames
+from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showerror, showinfo
+from urllib import response
 from PIL import ImageTk, Image
 
 
@@ -195,7 +194,7 @@ def deletar_dados():
 
         cursor.execute("""
         DELETE FROM dados WHERE id = ?
-        """, (select_id))
+        """, (select_id,))
 
         connection.commit()
         connection.close()
@@ -246,8 +245,9 @@ def pesquisar_cadastro(_id):
 
         connection = sqlite3.connect('cadastro_alunos.db')
         cursor = connection.cursor()
-        pesquisar_id_query = f""" SELECT id, nome, idade, sexo, telefone, email FROM dados WHERE id == ? """, (_id)
-        cursor.execute(pesquisar_id_query)
+        pesquisar_id_query = """SELECT id, nome, idade, sexo, telefone, email FROM dados WHERE id == ?"""
+        cursor.execute(pesquisar_id_query, (_id,))
+
 
         connection.commit()
         response = cursor.fetchall()
@@ -257,11 +257,11 @@ def pesquisar_cadastro(_id):
             for item in tree_table.get_children():
                 tree_table.delete(item)
             
-            for r in range(len(dados)):
-                tree_table.insert(parent='', iid=r, index='end', values=dados[r][0:6])
-            
-                limpar_dados()
-
+            for r in range(len(response)):
+                tree_table.insert(parent='', iid=r, index='end', values=response[r])
+        else:
+            for item in tree_table.get_children():
+                tree_table.delete(item)
     else:
         carregar_dados_tree()
 
@@ -335,10 +335,7 @@ email_entry = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 email_entry.grid(row=5, column=1)
 
 
-
 formulario_frame.pack(anchor=tk.W, pady=5, padx=5)
-
-
 
 
 botao_frame = tk.Frame(frame_Principal, bg='green')
@@ -373,7 +370,7 @@ pesquisar_lbl.pack(anchor= tk.W, padx=5)
 
 pesquisar = tk.Entry(frame_tabela, font=('bold', 12))
 pesquisar.pack(anchor= tk.W, padx=5, pady=10)
-pesquisar.bind('<keyRelease>', lambda e: pesquisar_cadastro(pesquisar.get()))
+pesquisar.bind('<KeyRelease>', lambda e: pesquisar_cadastro(pesquisar.get()))
 
 
 framerodape = tk.Frame(root, bg='grey')
