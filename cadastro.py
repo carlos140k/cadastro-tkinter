@@ -1,8 +1,15 @@
+from distutils.cmd import Command
+from importlib.resources import path
 import tkinter as tk 
+from tkinter.tix import IMAGE
 from tkinter.ttk import Treeview
 from turtle import right
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, askopenfilenames
 from PIL import ImageTk, Image
+
+
+import os
+import sqlite3
 
 
 
@@ -30,6 +37,53 @@ def deletar_image():
     global image_data
     image_data = b''
     img_label.config(image=img_padrao)
+
+
+def iniciar_database():
+    if os.path.exists('cadastro_alunos.db'):
+        pass
+    else:
+        connection = sqlite3.connect('cadastro_alunos.db')
+        cursor = connection.cursor()
+
+        cursor.execute("""
+        CREATE TABLE dados (
+            id int,
+            nome text,
+            idade text,
+            sexo text,
+            telefone text,
+            email text, 
+            image blog
+        
+        )
+                       
+        """)
+
+        connection.commit()
+        connection.close()
+
+
+def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
+    connection = sqlite3.connect('cadastro_alunos.db')
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    INSERT INTO dados (id, nome, idade, sexo, telefone, email, image) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (_id, _nome, _idade, _sexo, _telefone, _email, image_data))
+
+    connection.commit()
+
+    cursor.execute(f"""
+    SELECT * FROM dados
+                   
+    """)
+
+    connection.commit()
+    print (cursor.fetchall())
+
+    connection.close()
 
 
 frame_Principal = tk.Frame(root)
@@ -95,11 +149,11 @@ telefone_lbl.grid(row=4, column=0, sticky=tk.W, pady=2)
 telefone = tk.Entry(formulario_frame, width=50, font=('bold', 12))
 telefone.grid(row=4, column=1)
 
-endereco_lbl = tk.Label(formulario_frame, text='Endereço Usuário:', font=('bold', 12))
-endereco_lbl.grid(row=5, column=0, sticky=tk.W, pady=2)
+email_lbl = tk.Label(formulario_frame, text='E-mail:', font=('bold', 12))
+email_lbl.grid(row=5, column=0, sticky=tk.W, pady=2)
 
-endereco = tk.Entry(formulario_frame, width=50, font=('bold', 12))
-endereco.grid(row=5, column=1)
+email_entry = tk.Entry(formulario_frame, width=50, font=('bold', 12))
+email_entry.grid(row=5, column=1)
 
 
 
@@ -111,7 +165,11 @@ formulario_frame.pack(anchor=tk.W, pady=5, padx=5)
 botao_frame = tk.Frame(frame_Principal, bg='green')
 botao_frame.pack(anchor=tk.W, padx=10)
 
-add_btn = tk.Button(botao_frame, text='Cadastrar', bg='green', fg='white', font=('bold', 12))
+add_btn = tk.Button(botao_frame, text='Cadastrar', bg='green', fg='white', font=('bold', 12), 
+                    command=lambda: add_cadastro(_id=id_numero.get(), _nome=nome.get(),
+                                                 _idade=idade.get(),_sexo=sexo.get(),
+                                                 _telefone=telefone.get(),_email=email_entry.get()))
+
 add_btn.pack(side=tk.LEFT, padx=10)
 
 atualizar_btn = tk.Button(botao_frame, text='Atualizar', bg='yellow', fg='black', font=('bold', 12))
@@ -169,4 +227,6 @@ tree_table.column('Telefone', width=100, anchor= tk.W)
 tree_table.heading('Email', text='Email', anchor= tk.W)
 tree_table.column('Email', width=150, anchor= tk.W)
 
+
+iniciar_database()
 root.mainloop()
