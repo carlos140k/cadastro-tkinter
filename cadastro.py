@@ -64,7 +64,7 @@ def deletar_image():
     img_label.config(image=img_padrao)
 
 
-def checar_id_bd_existe(_id):
+def checar_id_bd_existe(_id, update):
     connection = sqlite3.connect('cadastro_alunos.db')
     cursor = connection.cursor()
 
@@ -75,15 +75,31 @@ def checar_id_bd_existe(_id):
     response = cursor.fetchall()
     connection.close()
 
+    if update == 'update':
+        if tree_table.selection():
+            index = int(tree_table.selection()[0])
+            select_id = tree_table.item(index, 'values')[0]
+
+            if _id == select_id:
+                return False
+            elif response:
+                return True
+            else:
+                return False
     return bool(response)
 
 
-def checar_campos_data():
+def checar_campos_data(order):
     if id_numero.get() !='':
-        if not checar_id_bd_existe(id_numero.get()):
-            add_cadastro(_id=id_numero.get(), _nome=nome.get(),
-                        _idade=idade.get(), _sexo=sexo.get(),
-                        _telefone=telefone.get(), _email=email_entry.get())
+        if not checar_id_bd_existe(id_numero.get(), update=order):
+            if order == 'add':
+                add_cadastro(_id=id_numero.get(), _nome=nome.get(),
+                            _idade=idade.get(), _sexo=sexo.get(),
+                            _telefone=telefone.get(), _email=email_entry.get())
+            elif order == 'update':
+                atualizar_cadastro(_id=id_numero.get(), _nome=nome.get(),
+                            _idade=idade.get(), _sexo=sexo.get(),
+                            _telefone=telefone.get(), _email=email_entry.get())
         else:
             showerror("Erro", "Este ID já está cadastrado no banco de dados")
             id_numero.focus()
@@ -142,6 +158,31 @@ def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
 
     limpar_dados()
     carregar_dados_tree()
+
+
+def atualizar_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
+    if tree_table.selection():
+        index = int(tree_table.selection()[0])
+        select_id = tree_table.item(index, 'values')[0]
+
+        connection = sqlite3.connect('cadastro_alunos.db')
+
+        cursor = connection.cursor()
+        cursor.execute("""
+        UPDATE dados 
+        SET id = ?, nome = ?, idade = ?, sexo = ?, telefone = ?, email = ?, image = ? 
+        WHERE id = ?
+        """, (_id, _nome, _idade, _sexo, _telefone, _email, image_data, select_id))
+
+
+        connection.commit()
+
+        if _id != select_id:
+            cursor.execute(""" UPDATE dados SET id = ? WHERE id = ? """, (_id, select_id))
+            connection.close()
+
+            limpar_dados()
+            carregar_dados_tree()
 
 
 def deletar_dados():
@@ -281,11 +322,11 @@ botao_frame = tk.Frame(frame_Principal, bg='green')
 botao_frame.pack(anchor=tk.W, padx=10)
 
 add_btn = tk.Button(botao_frame, text='Cadastrar', bg='green', fg='white', font=('bold', 12), 
-                    command=checar_campos_data)
-
+                    command= lambda: checar_campos_data('add'))
 add_btn.pack(side=tk.LEFT, padx=10)
 
-atualizar_btn = tk.Button(botao_frame, text='Atualizar', bg='yellow', fg='black', font=('bold', 12))
+atualizar_btn = tk.Button(botao_frame, text='Atualizar', bg='yellow', fg='black', font=('bold', 12), 
+                          command= lambda:checar_campos_data('update'))
 atualizar_btn.pack(side=tk.LEFT, padx=10)
 
 deletar_btn = tk.Button(botao_frame, text='Deletar', bg='red', fg='yellow', font=('bold', 12), command=deletar_dados)
