@@ -5,6 +5,7 @@ from tkinter.tix import IMAGE
 from tkinter.ttk import Treeview
 from turtle import right
 from tkinter.filedialog import askopenfilename, askopenfilenames
+from tkinter.messagebox import showerror, showinfo
 from PIL import ImageTk, Image
 
 
@@ -37,6 +38,45 @@ def deletar_image():
     global image_data
     image_data = b''
     img_label.config(image=img_padrao)
+
+
+def checar_id_bd_existe(_id):
+    connection = sqlite3.connect('cadastro_alunos.db')
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT id FROM dados WHERE id = ?", (_id,))
+
+    connection.commit()
+
+    response = cursor.fetchall()
+    connection.close()
+
+    return bool(response)
+
+
+def checar_campos_data():
+    if id_numero.get() !='':
+        if not checar_id_bd_existe(id_numero.get()):
+            add_cadastro(_id=id_numero.get(), _nome=nome.get(),
+                        _idade=idade.get(), _sexo=sexo.get(),
+                        _telefone=telefone.get(), _email=email_entry.get())
+        else:
+            showerror("Erro", "Este ID já está cadastrado no banco de dados")
+            id_numero.focus()
+    else:
+        showerror("Erro", "Favor preencher o campo ID")
+
+
+def limpar_dados():
+    global image_data
+    id_numero.delete(0, tk.END)
+    nome.delete(0, tk.END)
+    idade.delete(0, tk.END)
+    sexo.set('masculino')
+    telefone.delete(0, tk.END)
+    email_entry.delete(0, tk.END)
+    img_label.config(image=img_padrao)
+    image_data = b''
 
 
 def iniciar_database():
@@ -74,16 +114,9 @@ def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
     """, (_id, _nome, _idade, _sexo, _telefone, _email, image_data))
 
     connection.commit()
-
-    cursor.execute(f"""
-    SELECT * FROM dados
-                   
-    """)
-
-    connection.commit()
-    print (cursor.fetchall())
-
     connection.close()
+
+    limpar_dados()
 
 
 frame_Principal = tk.Frame(root)
@@ -166,9 +199,7 @@ botao_frame = tk.Frame(frame_Principal, bg='green')
 botao_frame.pack(anchor=tk.W, padx=10)
 
 add_btn = tk.Button(botao_frame, text='Cadastrar', bg='green', fg='white', font=('bold', 12), 
-                    command=lambda: add_cadastro(_id=id_numero.get(), _nome=nome.get(),
-                                                 _idade=idade.get(),_sexo=sexo.get(),
-                                                 _telefone=telefone.get(),_email=email_entry.get()))
+                    command=checar_campos_data)
 
 add_btn.pack(side=tk.LEFT, padx=10)
 
