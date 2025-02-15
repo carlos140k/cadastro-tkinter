@@ -159,6 +159,16 @@ def colocar_dados():
         telefone.insert(tk.END,dados[4])
         email_entry.insert(tk.END,dados[5])
 
+        connection = sqlite3.connect('cadastro_alunos.db')
+        cursor = connection.cursor()
+
+        cursor.execute("""
+        SELECT image FROM dados WHERE id == {dados[0}
+        """)
+
+        connection.commit()
+        connection.close()
+
 
 frame_Principal = tk.Frame(root)
 
