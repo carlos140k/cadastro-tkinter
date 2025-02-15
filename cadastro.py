@@ -144,7 +144,27 @@ def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
     carregar_dados_tree()
 
 
+def deletar_dados():
+    if tree_table.selection():
+        index = int(tree_table.selection()[0])
+        select_id = tree_table.item(index, 'values')[0]
+
+        connection = sqlite3.connect('cadastro_alunos.db')
+        cursor = connection.cursor()
+
+        cursor.execute("""
+        DELETE FROM dados WHERE id = ?
+        """, (select_id))
+
+        connection.commit()
+        connection.close()
+
+        limpar_dados()
+        carregar_dados_tree()
+
+
 def colocar_dados():
+    global image_data, img
     if tree_table.selection():
         index = int(tree_table.selection()[0])
 
@@ -162,12 +182,23 @@ def colocar_dados():
         connection = sqlite3.connect('cadastro_alunos.db')
         cursor = connection.cursor()
 
-        cursor.execute("""
-        SELECT image FROM dados WHERE id == {dados[0}
-        """)
+        cursor.execute("SELECT image FROM dados WHERE id = ?", (dados[0],))
 
         connection.commit()
+        response = cursor.fetchall()
         connection.close()
+
+        if response[0] != (b'',):
+            image_data = response[0][0]
+            img_data = response[0][0]
+
+            with open('.temp_pic', 'wb') as write_img:
+                write_img.write(img_data)
+                write_img.close()
+
+                img = ImageTk.PhotoImage(Image.open('.temp_pic'))
+                img_label.config(image=img)
+
 
 
 frame_Principal = tk.Frame(root)
@@ -257,10 +288,10 @@ add_btn.pack(side=tk.LEFT, padx=10)
 atualizar_btn = tk.Button(botao_frame, text='Atualizar', bg='yellow', fg='black', font=('bold', 12))
 atualizar_btn.pack(side=tk.LEFT, padx=10)
 
-deletar_btn = tk.Button(botao_frame, text='Deletar', bg='red', fg='yellow', font=('bold', 12))
+deletar_btn = tk.Button(botao_frame, text='Deletar', bg='red', fg='yellow', font=('bold', 12), command=deletar_dados)
 deletar_btn.pack(side=tk.LEFT, padx=10)
 
-limpar_btn = tk.Button(botao_frame, text='Limpar', bg='orange', fg='blue', font=('bold', 12))
+limpar_btn = tk.Button(botao_frame, text='Limpar', bg='orange', fg='blue', font=('bold', 12), command=limpar_dados)
 limpar_btn.pack(side=tk.LEFT, padx=10)
 
 
