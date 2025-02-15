@@ -19,6 +19,30 @@ root.geometry('500x700')
 root.title('Cadastro de Imagens')
 
 
+def carregar_dados_tree():
+    connection = sqlite3.connect('cadastro_alunos.db')
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    SELECT * FROM dados
+    """)
+
+    connection.commit()
+    dados = cursor.fetchall()
+    connection.close()
+
+    if dados:
+        for item in tree_table.get_children():
+            tree_table.delete(item)
+            
+        for r in range(len(dados)):
+            tree_table.insert(parent='', iid=r, index='end', values=dados[r][0:6])
+
+    else:
+        for item in tree_table.get_children():
+            tree_table.delete(item) 
+
+
 image_data = b''
 
 def ler_abrir_image():
@@ -81,7 +105,7 @@ def limpar_dados():
 
 def iniciar_database():
     if os.path.exists('cadastro_alunos.db'):
-        pass
+        carregar_dados_tree()
     else:
         connection = sqlite3.connect('cadastro_alunos.db')
         cursor = connection.cursor()
@@ -117,6 +141,7 @@ def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
     connection.close()
 
     limpar_dados()
+    carregar_dados_tree()
 
 
 frame_Principal = tk.Frame(root)
@@ -240,20 +265,20 @@ tree_table.pack(fill= tk.X)
 tree_table['column'] = ['ID', 'Nome', 'Idade', 'Sexo', 'Telefone', 'Email']
 tree_table.column('#0', stretch= tk.NO, width=0)
 
-tree_table.heading('ID', text='Numero ID', anchor= tk.W)
-tree_table.column('ID', width=80, anchor= tk.W)
+tree_table.heading('ID', text='ID', anchor= tk.W)
+tree_table.column('ID', width=30, anchor= tk.W)
 
 tree_table.heading('Nome', text='Nome', anchor= tk.W)
 tree_table.column('Nome', width=110, anchor= tk.W)
 
 tree_table.heading('Idade', text='Idade', anchor= tk.W)
-tree_table.column('Idade', width=80, anchor= tk.W)
+tree_table.column('Idade', width=33, anchor= tk.W)
 
 tree_table.heading('Sexo', text='Sexo', anchor= tk.W)
-tree_table.column('Sexo', width=80, anchor= tk.W)
+tree_table.column('Sexo', width=65, anchor= tk.W)
 
 tree_table.heading('Telefone', text='Telefone', anchor= tk.W)
-tree_table.column('Telefone', width=100, anchor= tk.W)
+tree_table.column('Telefone', width=80, anchor= tk.W)
 
 tree_table.heading('Email', text='Email', anchor= tk.W)
 tree_table.column('Email', width=150, anchor= tk.W)
