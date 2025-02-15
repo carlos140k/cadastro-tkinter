@@ -144,6 +144,22 @@ def add_cadastro(_id, _nome,_idade,_sexo,_telefone,_email):
     carregar_dados_tree()
 
 
+def colocar_dados():
+    if tree_table.selection():
+        index = int(tree_table.selection()[0])
+
+        dados = tree_table.item(index, 'values')
+
+        limpar_dados()
+
+        id_numero.insert(tk.END,dados[0])
+        nome.insert(tk.END,dados[1])
+        idade.insert(tk.END,dados[2])
+        sexo.set(dados[3])
+        telefone.insert(tk.END,dados[4])
+        email_entry.insert(tk.END,dados[5])
+
+
 frame_Principal = tk.Frame(root)
 
 Cabecalho = tk.Label(frame_Principal, text='Cadastro de alunos com imagens', bg='orange', font=('bold', 18))
@@ -261,6 +277,8 @@ rodape_lbl.pack(side= tk.BOTTOM, fill= tk.X)
 
 tree_table = Treeview(frame_tabela)
 tree_table.pack(fill= tk.X)
+
+tree_table.bind('<<TreeviewSelect>>', lambda e: colocar_dados())
 
 tree_table['column'] = ['ID', 'Nome', 'Idade', 'Sexo', 'Telefone', 'Email']
 tree_table.column('#0', stretch= tk.NO, width=0)
